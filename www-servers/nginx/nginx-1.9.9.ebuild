@@ -551,7 +551,7 @@ src_compile() {
 src_install() {
 	emake DESTDIR="${D%/}" install
 
-	cp "${FILESDIR}"/nginx.conf "${ED}"etc/nginx/nginx.conf || die
+	cp "${FILESDIR}"/nginx.conf-r2 "${ED}"etc/nginx/nginx.conf || die
 
 	newinitd "${FILESDIR}"/nginx.initd-r2 nginx
 
