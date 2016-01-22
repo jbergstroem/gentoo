@@ -190,8 +190,8 @@ NGINX_MODULES_3RD="
 	http_mogilefs
 	http_memc"
 
-IUSE="aio debug +http http2 +http-cache ipv6 libatomic luajit +pcre pcre-jit rtmp
-selinux ssl threads userland_GNU vim-syntax"
+IUSE="aio debug +http http2 +http-cache ipv6 libatomic libressl luajit +pcre
+	pcre-jit rtmp selinux ssl threads userland_GNU vim-syntax"
 
 for mod in $NGINX_MODULES_STD; do
 	IUSE="${IUSE} +nginx_modules_http_${mod}"
@@ -215,9 +215,20 @@ IUSE="${IUSE} nginx_modules_http_spdy"
 CDEPEND="
 	pcre? ( >=dev-libs/libpcre-4.2 )
 	pcre-jit? ( >=dev-libs/libpcre-8.20[jit] )
-	ssl? ( dev-libs/openssl:0= )
-	http2? ( >=dev-libs/openssl-1.0.1c:0= )
-	http-cache? ( userland_GNU? ( dev-libs/openssl:0= ) )
+	ssl? (
+		!libressl? ( dev-libs/openssl:0= )
+		libressl? ( dev-libs/libressl:= )
+	)
+	http2? (
+		!libressl? ( >=dev-libs/openssl-1.0.1c:0= )
+		libressl? ( dev-libs/libressl:= )
+	)
+	http-cache? (
+		userland_GNU? (
+			!libressl? ( dev-libs/openssl:0= )
+			libressl? ( dev-libs/libressl:= )
+		)
+	)
 	nginx_modules_http_geoip? ( dev-libs/geoip )
 	nginx_modules_http_gunzip? ( sys-libs/zlib )
 	nginx_modules_http_gzip? ( sys-libs/zlib )
@@ -225,7 +236,12 @@ CDEPEND="
 	nginx_modules_http_image_filter? ( media-libs/gd[jpeg,png] )
 	nginx_modules_http_perl? ( >=dev-lang/perl-5.8 )
 	nginx_modules_http_rewrite? ( >=dev-libs/libpcre-4.2 )
-	nginx_modules_http_secure_link? ( userland_GNU? ( dev-libs/openssl:0= ) )
+	nginx_modules_http_secure_link? (
+		userland_GNU? (
+			!libressl? ( dev-libs/openssl:0= )
+			libressl? ( dev-libs/libressl:= )
+		)
+	)
 	nginx_modules_http_xslt? ( dev-libs/libxml2 dev-libs/libxslt )
 	nginx_modules_http_lua? ( !luajit? ( dev-lang/lua:0= ) luajit? ( dev-lang/luajit:2= ) )
 	nginx_modules_http_auth_pam? ( virtual/pam )
