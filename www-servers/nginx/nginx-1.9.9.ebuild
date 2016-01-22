@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -164,11 +164,12 @@ LICENSE="BSD-2 BSD SSLeay MIT GPL-2 GPL-2+
 SLOT="mainline"
 KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~x86 ~x86-fbsd ~amd64-linux ~x86-linux"
 
-NGINX_MODULES_STD="access auth_basic autoindex browser charset empty_gif fastcgi
-geo gzip limit_req limit_conn map memcached proxy referer rewrite scgi ssi
-split_clients upstream_ip_hash userid uwsgi"
-NGINX_MODULES_OPT="addition auth_request dav degradation flv geoip gunzip gzip_static
-image_filter mp4 perl random_index realip secure_link stub_status sub xslt"
+NGINX_MODULES_STD="access auth_basic autoindex browser charset empty_gif
+	fastcgi geo gzip limit_req limit_conn map memcached proxy referer
+	rewrite scgi ssi split_clients upstream_ip_hash userid uwsgi"
+NGINX_MODULES_OPT="addition auth_request dav degradation flv geoip gunzip
+	gzip_static image_filter mp4 perl random_index realip secure_link
+	stub_status sub xslt"
 NGINX_MODULES_MAIL="imap pop3 smtp"
 NGINX_MODULES_3RD="
 	http_upload_progress
@@ -352,12 +353,12 @@ src_configure() {
 
 	local myconf=() http_enabled= mail_enabled=
 
-	use aio		  && myconf+=( --with-file-aio )
-	use debug	  && myconf+=( --with-debug )
+	use aio       && myconf+=( --with-file-aio )
+	use debug     && myconf+=( --with-debug )
 	use http2     && myconf+=( --with-http_v2_module )
-	use ipv6	  && myconf+=( --with-ipv6 )
+	use ipv6      && myconf+=( --with-ipv6 )
 	use libatomic && myconf+=( --with-libatomic )
-	use pcre	  && myconf+=( --with-pcre )
+	use pcre      && myconf+=( --with-pcre )
 	use pcre-jit  && myconf+=( --with-pcre-jit )
 	use threads   && myconf+=( --with-threads )
 
