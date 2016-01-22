@@ -170,8 +170,8 @@ NGINX_MODULES_STD="access auth_basic autoindex browser charset empty_gif
 NGINX_MODULES_OPT="addition auth_request dav degradation flv geoip gunzip
 	gzip_static image_filter mp4 perl random_index realip secure_link
 	stub_status sub xslt"
+NGINX_MODULES_STREAM="access limit_conn upstream"
 NGINX_MODULES_MAIL="imap pop3 smtp"
-
 NGINX_MODULES_3RD="
 	http_upload_progress
 	http_headers_more
@@ -203,6 +203,10 @@ for mod in $NGINX_MODULES_OPT; do
 	IUSE="${IUSE} nginx_modules_http_${mod}"
 done
 
+for mod in $NGINX_MODULES_STREAM; do
+	IUSE="${IUSE} nginx_modules_stream_${mod}"
+done
+
 for mod in $NGINX_MODULES_MAIL; do
 	IUSE="${IUSE} nginx_modules_mail_${mod}"
 done
@@ -212,6 +216,7 @@ for mod in $NGINX_MODULES_3RD; do
 done
 
 # Add so we can warn users updating about config changes
+# @TODO: jbergstroem: remove on next release series
 IUSE="${IUSE} nginx_modules_http_spdy"
 
 CDEPEND="
@@ -352,7 +357,7 @@ src_configure() {
 
 	cd "${S}"
 
-	local myconf=() http_enabled= mail_enabled=
+	local myconf=() http_enabled= mail_enabled= stream_enabled=
 
 	use aio       && myconf+=( --with-file-aio )
 	use debug     && myconf+=( --with-debug )
@@ -491,6 +496,27 @@ src_configure() {
 		use ssl && myconf+=( --with-http_ssl_module )
 	else
 		myconf+=( --without-http --without-http-cache )
+	fi
+
+	# Stream modules
+	for mod in $NGINX_MODULES_STREAM; do
+		if use nginx_modules_stream_${mod}; then
+			stream_enabled=1
+		else
+			# Treat stream upstream slightly differently
+			if ! use nginx_modules_stream_upstream; then
+				myconf+=( --without_stream_upstream_hash_module )
+				myconf+=( --without-stream_upstream_least_conn_module )
+				myconf+=( --without-stream_upstream_zone_module )
+			else
+				myconf+=( --without_stream_${stream}_module )
+			fi
+		fi
+	done
+
+	if [ $stream_enabled ]; then
+		myconf+=( --with-stream )
+		use ssl && myconf+=( --with-stream_ssl_module )
 	fi
 
 	# MAIL modules
