@@ -30,7 +30,7 @@ HTTP_UPLOAD_PROGRESS_MODULE_URI="https://github.com/masterzen/nginx-upload-progr
 HTTP_UPLOAD_PROGRESS_MODULE_WD="${WORKDIR}/nginx-upload-progress-module-${HTTP_UPLOAD_PROGRESS_MODULE_PV}"
 
 # http_headers_more (https://github.com/agentzh/headers-more-nginx-module, BSD license)
-HTTP_HEADERS_MORE_MODULE_PV="0.28"
+HTTP_HEADERS_MORE_MODULE_PV="0.29"
 HTTP_HEADERS_MORE_MODULE_P="ngx_http_headers_more-${HTTP_HEADERS_MORE_MODULE_PV}"
 HTTP_HEADERS_MORE_MODULE_URI="https://github.com/agentzh/headers-more-nginx-module/archive/v${HTTP_HEADERS_MORE_MODULE_PV}.tar.gz"
 HTTP_HEADERS_MORE_MODULE_WD="${WORKDIR}/headers-more-nginx-module-${HTTP_HEADERS_MORE_MODULE_PV}"
@@ -54,7 +54,7 @@ HTTP_FANCYINDEX_MODULE_URI="https://github.com/aperezdc/ngx-fancyindex/archive/v
 HTTP_FANCYINDEX_MODULE_WD="${WORKDIR}/ngx-fancyindex-${HTTP_FANCYINDEX_MODULE_PV}"
 
 # http_lua (https://github.com/openresty/lua-nginx-module, BSD license)
-HTTP_LUA_MODULE_PV="0.9.19"
+HTTP_LUA_MODULE_PV="0.10.0"
 HTTP_LUA_MODULE_P="ngx_http_lua-${HTTP_LUA_MODULE_PV}"
 HTTP_LUA_MODULE_URI="https://github.com/openresty/lua-nginx-module/archive/v${HTTP_LUA_MODULE_PV}.tar.gz"
 HTTP_LUA_MODULE_WD="${WORKDIR}/lua-nginx-module-${HTTP_LUA_MODULE_PV}"
@@ -120,10 +120,10 @@ HTTP_STICKY_MODULE_P="nginx_http_sticky_module_ng-${HTTP_STICKY_MODULE_PV}"
 HTTP_STICKY_MODULE_URI="https://bitbucket.org/nginx-goodies/nginx-sticky-module-ng/get/${HTTP_STICKY_MODULE_PV}.tar.bz2"
 HTTP_STICKY_MODULE_WD="${WORKDIR}/nginx-goodies-nginx-sticky-module-ng-c78b7dd79d0d"
 
-# mogilefs-module (http://www.grid.net.ru/nginx/mogilefs.en.html, BSD-2)
+# mogilefs-module (https://github.com/vkholodkov/nginx-mogilefs-module, BSD-2)
 HTTP_MOGILEFS_MODULE_PV="1.0.4"
 HTTP_MOGILEFS_MODULE_P="ngx_mogilefs_module-${HTTP_MOGILEFS_MODULE_PV}"
-HTTP_MOGILEFS_MODULE_URI="http://www.grid.net.ru/nginx/download/nginx_mogilefs_module-${HTTP_MOGILEFS_MODULE_PV}.tar.gz"
+HTTP_MOGILEFS_MODULE_URI="https://github.com/vkholodkov/nginx-mogilefs-module/archive/${HTTP_MOGILEFS_MODULE_PV}.tar.gz"
 HTTP_MOGILEFS_MODULE_WD="${WORKDIR}/nginx_mogilefs_module-${HTTP_MOGILEFS_MODULE_PV}"
 
 # memc-module (https://github.com/openresty/memc-nginx-module, BSD-2)
