@@ -132,6 +132,12 @@ HTTP_MEMC_MODULE_P="ngx_memc_module-${HTTP_MEMC_MODULE_PV}"
 HTTP_MEMC_MODULE_URI="https://github.com/openresty/memc-nginx-module/archive/v${HTTP_MEMC_MODULE_PV}.tar.gz"
 HTTP_MEMC_MODULE_WD="${WORKDIR}/memc-nginx-module-${HTTP_MEMC_MODULE_PV}"
 
+# nginx-ldap-auth-module (https://github.com/kvspb/nginx-auth-ldap, BSD-2)
+HTTP_LDAP_MODULE_PV="d0f2f829f708792ee97a9241c9c6ffd33c47c7c1"
+HTTP_LDAP_MODULE_P="nginx-auth-ldap-${HTTP_LDAP_MODULE_PV}"
+HTTP_LDAP_MODULE_URI="https://github.com/kvspb/nginx-auth-ldap/archive/${HTTP_LDAP_MODULE_PV}.tar.gz"
+HTTP_LDAP_MODULE_WD="${WORKDIR}/nginx-auth-ldap-${HTTP_LDAP_MODULE_PV}"
+
 inherit eutils ssl-cert toolchain-funcs perl-module flag-o-matic user systemd versionator multilib
 
 DESCRIPTION="Robust, small and high performance http and reverse proxy server"
@@ -155,7 +161,8 @@ SRC_URI="http://nginx.org/download/${P}.tar.gz
 	nginx_modules_http_push_stream? ( ${HTTP_PUSH_STREAM_MODULE_URI} -> ${HTTP_PUSH_STREAM_MODULE_P}.tar.gz )
 	nginx_modules_http_sticky? ( ${HTTP_STICKY_MODULE_URI} -> ${HTTP_STICKY_MODULE_P}.tar.bz2 )
 	nginx_modules_http_mogilefs? ( ${HTTP_MOGILEFS_MODULE_URI} -> ${HTTP_MOGILEFS_MODULE_P}.tar.gz )
-	nginx_modules_http_memc? ( ${HTTP_MEMC_MODULE_URI} -> ${HTTP_MEMC_MODULE_P}.tar.gz )"
+	nginx_modules_http_memc? ( ${HTTP_MEMC_MODULE_URI} -> ${HTTP_MEMC_MODULE_P}.tar.gz )
+	nginx_modules_http_auth_ldap? ( ${HTTP_LDAP_MODULE_URI} -> ${HTTP_LDAP_MODULE_P}.tar.gz )"
 
 LICENSE="BSD-2 BSD SSLeay MIT GPL-2 GPL-2+
 	nginx_modules_http_security? ( Apache-2.0 )
@@ -190,7 +197,8 @@ NGINX_MODULES_3RD="
 	http_sticky
 	http_ajp
 	http_mogilefs
-	http_memc"
+	http_memc
+	http_auth_ldap"
 
 IUSE="aio debug +http +http2 +http-cache ipv6 libatomic libressl luajit +pcre
 	pcre-jit rtmp selinux ssl threads userland_GNU vim-syntax"
@@ -254,7 +262,8 @@ CDEPEND="
 	nginx_modules_http_auth_pam? ( virtual/pam )
 	nginx_modules_http_metrics? ( dev-libs/yajl )
 	nginx_modules_http_dav_ext? ( dev-libs/expat )
-	nginx_modules_http_security? ( >=dev-libs/libxml2-2.7.8 dev-libs/apr-util www-servers/apache )"
+	nginx_modules_http_security? ( >=dev-libs/libxml2-2.7.8 dev-libs/apr-util www-servers/apache )
+	nginx_modules_http_auth_ldap? ( net-nds/openldap[ssl?] )"
 RDEPEND="${CDEPEND}
 	selinux? ( sec-policy/selinux-nginx )
 	!www-servers/nginx:0"
@@ -482,10 +491,15 @@ src_configure() {
 		myconf+=( --add-module=${HTTP_MOGILEFS_MODULE_WD} )
 	fi
 
-		if use nginx_modules_http_memc ; then
-				http_enabled=1
-				myconf+=( --add-module=${HTTP_MEMC_MODULE_WD} )
-		fi
+	if use nginx_modules_http_memc ; then
+		http_enabled=1
+		myconf+=( --add-module=${HTTP_MEMC_MODULE_WD} )
+	fi
+
+	if use nginx_modules_http_auth_ldap; then
+		http_enabled=1
+		myconf+=( --add-module=${HTTP_LDAP_MODULE_WD} )
+	fi
 
 	if use http || use http-cache || use http2; then
 		http_enabled=1
@@ -687,6 +701,11 @@ src_install() {
 	if use nginx_modules_http_memc; then
 		docinto ${HTTP_MEMC_MODULE_P}
 		dodoc "${HTTP_MEMC_MODULE_WD}"/README.markdown
+	fi
+
+	if use nginx_modules_http_auth_ldap; then
+		docinto ${HTTP_LDAP_MODULE_P}
+		dodoc "${HTTP_LDAP_MODULE_WD}"/example.conf
 	fi
 }
 
