@@ -171,6 +171,7 @@ NGINX_MODULES_OPT="addition auth_request dav degradation flv geoip gunzip
 	gzip_static image_filter mp4 perl random_index realip secure_link
 	stub_status sub xslt"
 NGINX_MODULES_MAIL="imap pop3 smtp"
+
 NGINX_MODULES_3RD="
 	http_upload_progress
 	http_headers_more
@@ -191,7 +192,7 @@ NGINX_MODULES_3RD="
 	http_mogilefs
 	http_memc"
 
-IUSE="aio debug +http http2 +http-cache ipv6 libatomic libressl luajit +pcre
+IUSE="aio debug +http +http2 +http-cache ipv6 libatomic libressl luajit +pcre
 	pcre-jit rtmp selinux ssl threads userland_GNU vim-syntax"
 
 for mod in $NGINX_MODULES_STD; do
